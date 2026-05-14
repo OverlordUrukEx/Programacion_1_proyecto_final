@@ -20,6 +20,26 @@ def validar_telefono(valor: str) -> str:
 
 def validar_opciones(valor: str, opciones_validas: list, nombre_campo: str) -> str:
     valor_limpio = validar_cadena_no_vacia(valor, nombre_campo)
-    if valor_limpio not in opciones_validas:
+
+    # 1. Convertimos la entrada y las opciones a minúsculas para una comparación segura
+    valor_comparacion = valor_limpio.lower()
+    opciones_comparacion = [opcion.lower() for opcion in opciones_validas]
+
+    # 2. Comparamos
+    if valor_comparacion not in opciones_comparacion:
         raise ValueError(f"El campo '{nombre_campo}' debe ser uno de {opciones_validas}. Recibido: '{valor_limpio}'")
-    return valor_limpio
+
+    # 3. Retornamos el valor formateado (Primera letra en mayúscula por estética)
+    return valor_comparacion.capitalize()
+
+def validar_numero_positivo(valor: float, nombre_campo: str, permite_cero: bool = True) -> float:
+    """Valida que un valor sea numérico y no sea negativo."""
+    try:
+        numero = float(valor)
+    except ValueError:
+        raise ValueError(f"El campo '{nombre_campo}' debe ser un número válido.")
+    if numero < 0:
+        raise ValueError(f"El campo '{nombre_campo}' no puede ser negativo.")
+    if not permite_cero and numero == 0:
+        raise ValueError(f"El campo '{nombre_campo}' debe ser mayor a cero.")
+    return numero
