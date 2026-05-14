@@ -1,4 +1,9 @@
 import re
+def validar_solo_numeros(valor: str, nombre_campo: str) -> str:
+    valor_limpio = validar_cadena_no_vacia(valor, nombre_campo)
+    if not valor_limpio.isdigit():
+        raise ValueError(f"El campo '{nombre_campo}' solo debe contener números. Recibido: '{valor_limpio}'")
+    return valor_limpio
 
 def validar_cadena_no_vacia(valor: str, nombre_campo: str) -> str:
     if not valor or not str(valor).strip():
@@ -43,3 +48,14 @@ def validar_numero_positivo(valor: float, nombre_campo: str, permite_cero: bool 
     if not permite_cero and numero == 0:
         raise ValueError(f"El campo '{nombre_campo}' debe ser mayor a cero.")
     return numero
+
+def validar_correo(valor: str) -> str:
+    # Excepción explícita para cuando no se requiere factura electrónica
+    if valor == "No aplica":
+        return valor
+
+    valor_limpio = validar_cadena_no_vacia(valor, "correo electrónico")
+    # Regex básico para validar formato de correo electrónico
+    if not re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", valor_limpio):
+        raise ValueError(f"Formato de correo inválido. Recibido: '{valor_limpio}'")
+    return valor_limpio
