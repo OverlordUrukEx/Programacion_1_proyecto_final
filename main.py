@@ -1,5 +1,3 @@
-# main.py
-# main.py
 from modelos.actores.cliente import Cliente
 from modelos.actores.cajero import Cajero
 from modelos.catalogo.ingrediente import Ingrediente
